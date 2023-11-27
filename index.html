@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Workout Generator</h1>
+    <div class="form">
+        <label for="exercise">Preferred Exercises:</label>
+        <input type="text" id="exercise" placeholder="e.g., Cardio, Strength Training">
+
+        <label for="height">Your Height (cm):</label>
+        <input type="number" id="height">
+
+        <label for="weight">Your Weight (kg):</label>
+        <input type="number" id="weight">
+
+        <label for="age">Your Age:</label>
+        <input type="number" id="age">
+
+        <label for="frequency">Workout Frequency (times per week):</label>
+        <input type="number" id="frequency">
+
+        <label>Preferred Workout Types:</label>
+        <div id="workout-buttons">
+            <button class="workout-type" data-type="cardio">Cardio</button>
+            <button class="workout-type" data-type="strength-training">Strength Training</button>
+            <button class="workout-type" data-type="yoga">Yoga</button>
+            <!-- Add more buttons for other workout types -->
+        </div>
+
+        <button id="generate-btn">Generate Workout</button>
+    </div>
+    <div class="workout-output" id="workout-output"></div>
+</div>
+
+<script src="main.js"></script>
+<script src="utils.js"></script>
+</body>
+</html>
