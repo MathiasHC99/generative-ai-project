@@ -1,48 +1,21 @@
-const HUGGINGFACE_TOKEN = "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";
+const HUGGINGFACE_TOKEN = "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";
 
-async function generateWorkout(userData) {
+async function getGeneratedText(query) {
     try {
-        const generatedText = await fetchWorkout(userData);
-        return generatedText;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
-
-function fetchWorkout(userData) {
-    const query = {
-        inputs: {
-            exercise: userData.exercise,
-            height: userData.height,
-            weight: userData.weight,
-            age: userData.age,
-            frequency: userData.frequency,
-            workoutType: userData.workoutType
-        }
-    };
-
-    return fetch(
-        "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
-        {
-            headers: {
-                Authorization: `Bearer ${HUGGINGFACE_TOKEN}`,
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify(query),
-        }
-    )
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok.");
+        const response = await fetch(
+            'https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct',
+            {
+                headers: {
+                    Authorization: `Bearer ${HUGGINGFACE_TOKEN}`,
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                body: JSON.stringify({ inputs: query }),
             }
-            return response.json();
-        })
-        .then(data => {
-            const generatedText = data[0].generated_text || data.generated_text;
-            return generatedText;
-        })
-        .catch(error => {
-            throw new Error(error.message);
-        });
+        );
+        const data = await response.json();
+        return (data && data[0] && data[0].generatedText !== undefined) ? data[0].generatedText : '';
+    } catch (error) {
+        throw new Error('Failed to fetch data from the API.');
+    }
 }

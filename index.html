@@ -1,43 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Workout Generator</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Generative Workout Tool</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Workout Generator</h1>
-    <div class="form">
-        <label for="exercise">Preferred Exercises:</label>
-        <input type="text" id="exercise" placeholder="e.g., Cardio, Strength Training">
+<h1>Generative Workout Tool</h1>
+<p>This tool can generate a personalized workout routine for you based on your age, height, weight, and preferred workout type. Just fill in the form below and click the button to get your workout plan.</p>
+<form>
+    <label for="age">Age:</label>
+    <input id="age" type="number">
+    <label for="height">Height (cm):</label>
+    <input id="height" type="number">
+    <label for="weight">Weight (kg):</label>
+    <input id="weight" type="number">
 
-        <label for="height">Your Height (cm):</label>
-        <input type="number" id="height">
 
-        <label for="weight">Your Weight (kg):</label>
-        <input type="number" id="weight">
-
-        <label for="age">Your Age:</label>
-        <input type="number" id="age">
-
-        <label for="frequency">Workout Frequency (times per week):</label>
-        <input type="number" id="frequency">
-
-        <label>Preferred Workout Types:</label>
-        <div id="workout-buttons">
-            <button class="workout-type" data-type="cardio">Cardio</button>
-            <button class="workout-type" data-type="strength-training">Strength Training</button>
-            <button class="workout-type" data-type="yoga">Yoga</button>
-            <!-- Add more buttons for other workout types -->
-        </div>
-
-        <button id="generate-btn">Generate Workout</button>
+    <label for="workout">Preferred workout:</label>
+    <div id="workout">
+        <input type="checkbox" id="cardio" name="workoutType" value="cardio">
+        <label for="cardio">Cardio</label><br>
+        <input type="checkbox" id="strength" name="workoutType" value="strength">
+        <label for="strength">Strength training</label><br>
+        <input type="checkbox" id="swimming" name="workoutType" value="swimming">
+        <label for="swimming">Swimming</label><br>
+        <input type="checkbox" id="cycling" name="workoutType" value="cycling">
+        <label for="cycling">Cycling</label><br>
+        <input type="checkbox" id="running" name="workoutType" value="running">
+        <label for="running">Running</label><br>
     </div>
-    <div class="workout-output" id="workout-output"></div>
-</div>
-
-<script src="main.js"></script>
+    <button id="generateBtn">Generate workout routine</button>
+</form>
+<p class="routine"></p>
 <script src="utils.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

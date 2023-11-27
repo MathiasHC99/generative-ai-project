@@ -1,49 +1,50 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const generateButton = document.getElementById('generate-btn');
-    const workoutOutput = document.getElementById('workout-output');
-    const workoutButtons = document.querySelectorAll('.workout-type');
+const button = document.querySelector('#generateBtn');
+const ageInput = document.querySelector('#age');
+const heightInput = document.querySelector('#height');
+const weightInput = document.querySelector('#weight');
+const workoutCheckboxes = document.querySelectorAll('input[name="workoutType"]');
+const routineDisplay = document.querySelector('.routine');
 
-    generateButton.addEventListener('click', () => {
-        const exercise = document.getElementById('exercise').value;
-        const height = document.getElementById('height').value;
-        const weight = document.getElementById('weight').value;
-        const age = document.getElementById('age').value;
-        const frequency = document.getElementById('frequency').value;
+let isFormComplete = false;
 
-        let selectedWorkouts = [];
-        workoutButtons.forEach(button => {
-            if (button.classList.contains('selected')) {
-                selectedWorkouts.push(button.getAttribute('data-type'));
-                button.disabled = true;
-            }
-        });
+button.addEventListener('click', async (event) => {
+    event.preventDefault();
 
-        const userData = {
-            exercise,
-            height,
-            weight,
-            age,
-            frequency,
-            selectedWorkouts
-        };
+    if (!isFormComplete) {
+        if (!validateForm()) {
+            routineDisplay.textContent = 'Please fill in all fields.';
+            return;
+        } else {
+            isFormComplete = true;
+        }
+    }
 
-        generateWorkout(userData)
-            .then(workout => {
-                workoutOutput.innerHTML = `<p>Your custom workout plan:</p><p>${workout}</p>`;
-            })
-            .catch(error => {
-                workoutOutput.innerHTML = `<p>Failed to generate workout: ${error.message}</p>`;
-            });
-    });
+    routineDisplay.textContent = 'Generating workout routine';
+    let dots = 0;
 
-    workoutButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (!button.classList.contains('selected')) {
-                button.classList.add('selected');
-            } else {
-                button.classList.remove('selected');
-                button.disabled = false;
-            }
-        });
-    });
+    const interval = setInterval(() => {
+        dots = (dots + 1) % 4;
+        routineDisplay.textContent = `Generating workout routine${'.'.repeat(Math.min(dots, 3))}`;
+    }, 500);
+
+    const selectedWorkouts = [...workoutCheckboxes]
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+    const workoutText = selectedWorkouts.join(', ');
+
+    try {
+        const generatedText = await getGeneratedText(
+            `Here's a workout routine for a person who is ${ageInput.value} years old, ${heightInput.value} cm tall, ${weightInput.value} kg heavy, and prefers ${workoutText} exercises.`
+        );
+        clearInterval(interval);
+        routineDisplay.textContent = `${generatedText}${generatedText ? '...' : ''}`;
+    } catch (error) {
+        console.error('Error:', error);
+        clearInterval(interval);
+        routineDisplay.textContent = 'Failed to generate workout routine.';
+    }
 });
+
+function validateForm() {
+    return ageInput.value && heightInput.value && weightInput.value && [...workoutCheckboxes].some(checkbox => checkbox.checked);
+}
